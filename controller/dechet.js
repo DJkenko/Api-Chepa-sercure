@@ -1,11 +1,11 @@
-const { Lieu } = require("../model/Lieu")
+const { Dechet } = require("../model/dechet")
 const client = require("../bdd/connect");
 
-const ajouterLieu = async (req, res)=>{
+const ajouterDechet = async (req, res)=>{
     try{
-        let lieu = new Lieu(req.body.id_adresse, req.body.adresse, req.body.code_postale, req.body.commune);
+        let dechet = new Dechet(req.body.id_dechet, req.body.nom_dechet);
 
-        let result = await client.db().collection("lieu").insertOne(lieu)
+        let result = await client.db().collection("dechet").insertOne(dechet)
 
         res.status(200).json(result);
 
@@ -16,15 +16,15 @@ const ajouterLieu = async (req, res)=>{
 
 }
 
-const getTousLieu = async (req, res)=>{
+const getTousDechet = async (req, res)=>{
 try {
-    let cursor = client.db().collection("lieu").find();
+    let cursor = client.db().collection("dechet").find();
     let result = await cursor.toArray();
     if(result.length>0){
         res.status(200).json(result);
     }
     else{
-        res.status(204).json({msg : "Aucun lieu trouvé"});
+        res.status(204).json({msg : "Aucun dechet trouvé"});
     }
     
 } catch (error) {
@@ -33,16 +33,16 @@ try {
 }
 }
 
-const getLieu = async (req, res)=>{
+const getDechet = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
-        let cursor = client.db().collection("lieu").find({id_adresse:id});
+        let cursor = client.db().collection("dechet").find({id_dechet:id});
         let result = await cursor.toArray();
         if(result.length>0){
             res.status(200).json(result[0]);
         }
         else{
-            res.status(204).json({msg : "Ce Lieu n'existe pas "});
+            res.status(204).json({msg : "Ce Dechet n'existe pas "});
         }
         
     } catch (error) {
@@ -51,19 +51,18 @@ const getLieu = async (req, res)=>{
     }
 }
 
-const modifierLieu = async (req, res)=>{
+const modifierDechet = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
-        let nAdresse = req.body.adresse;
-        let nCodePostale = req.body.code_postale;
-        let nCommune = req.body.commune;
+        let nNom_dechet = req.body.nom_dechet;
+       
 
-      let result =  await client.db().collection("lieu").deleteOne({id_adresse: id},{$set :{adresse: nAdresse , code_postale: nCodePostale , commune: nCommune}});
+      let result =  await client.db().collection("dechet").deleteOne({id_dechet: id},{$set :{nom_dechet: nNom_dechet }});
       if(result.modifiedCount==1){
         res.status(200).json({msg : " modification faite "});
     }
     else{
-        res.status(404).json({msg : "Ce Lieu n'existe pas "});
+        res.status(404).json({msg : "Ce Dechet n'existe pas "});
     }
       
     } catch (error) {
@@ -72,17 +71,17 @@ const modifierLieu = async (req, res)=>{
     }
 }
 
-const supprimerLieu = async (req, res)=>{
+const supprimerDechet = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
        
 
-      let result =  await client.db().collection("lieu").updateOne({id_adresse: id});
+      let result =  await client.db().collection("dechet").updateOne({id_dechet: id});
       if(result.deletedCount==1){
         res.status(200).json({msg : " suppression faite "});
     }
     else{
-        res.status(404).json({msg : "Ce Lieu n'existe pas "});
+        res.status(404).json({msg : "Ce Dechet n'existe pas "});
     }
 
     } catch (error) {
@@ -91,4 +90,4 @@ const supprimerLieu = async (req, res)=>{
     }
 }
 
-module.exports = {ajouterLieu, getTousLieu, getLieu , modifierLieu , supprimerLieu };
+module.exports = {ajouterDechet, getTousDechet, getDechet , modifierDechet , supprimerDechet };
