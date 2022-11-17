@@ -1,8 +1,7 @@
 class Utilisateur{
-    constructor(username, password, token){
+    constructor(username, password){
         this.username = username;
         this.password = password;
-        this.token = token;
     }
 }
 
