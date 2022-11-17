@@ -1,10 +1,13 @@
 const express = require('express');
 const { connecter } = require('./bd/connect');
+
 const routesUtilisateur = require("./route/utilisateur");
+
 const app = express();
 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json());
+
 app.use("/api/v1", routesUtilisateur);
 
 const url = "mongodb+srv://test:test@cluster0.lipmloq.mongodb.net/?retryWrites=true&w=majority";
