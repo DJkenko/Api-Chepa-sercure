@@ -5,7 +5,7 @@ const ajouterLieu = async (req, res)=>{
     try{
         let lieu = new Lieu(req.body.id_adresse, req.body.adresse, req.body.code_postale, req.body.commune);
 
-        let result = await client.db().collection("lieu").insertOne(lieu)
+        let result = await client.bd().collection("lieu").insertOne(lieu)
 
         res.status(200).json(result);
 
@@ -18,7 +18,7 @@ const ajouterLieu = async (req, res)=>{
 
 const getTousLieu = async (req, res)=>{
 try {
-    let cursor = client.db().collection("lieu").find();
+    let cursor = client.bd().collection("lieu").find();
     let result = await cursor.toArray();
     if(result.length>0){
         res.status(200).json(result);
@@ -36,7 +36,7 @@ try {
 const getLieu = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
-        let cursor = client.db().collection("lieu").find({id_adresse:id});
+        let cursor = client.bd().collection("lieu").find({id_adresse:id});
         let result = await cursor.toArray();
         if(result.length>0){
             res.status(200).json(result[0]);
@@ -58,7 +58,7 @@ const modifierLieu = async (req, res)=>{
         let nCodePostale = req.body.code_postale;
         let nCommune = req.body.commune;
 
-      let result =  await client.db().collection("lieu").deleteOne({id_adresse: id},{$set :{adresse: nAdresse , code_postale: nCodePostale , commune: nCommune}});
+      let result =  await client.bd().collection("lieu").deleteOne({id_adresse: id},{$set :{adresse: nAdresse , code_postale: nCodePostale , commune: nCommune}});
       if(result.modifiedCount==1){
         res.status(200).json({msg : " modification faite "});
     }
@@ -77,7 +77,7 @@ const supprimerLieu = async (req, res)=>{
         let id = new ObjectID(req.params.id);
        
 
-      let result =  await client.db().collection("lieu").updateOne({id_adresse: id});
+      let result =  await client.bd().collection("lieu").updateOne({id_adresse: id});
       if(result.deletedCount==1){
         res.status(200).json({msg : " suppression faite "});
     }
