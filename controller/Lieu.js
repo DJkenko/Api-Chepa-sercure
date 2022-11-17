@@ -16,7 +16,7 @@ const ajouterLieu = async (req, res)=>{
 
 }
 
-const getTousLieu = async (req, req)=>{
+const getTousLieu = async (req, res)=>{
 try {
     let cursor = client.db().collection("lieu").find();
     let result = await cursor.toArray();
@@ -33,7 +33,7 @@ try {
 }
 }
 
-const getLieu = async (req, req)=>{
+const getLieu = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
         let cursor = client.db().collection("lieu").find({id_adresse:id});
@@ -51,7 +51,7 @@ const getLieu = async (req, req)=>{
     }
 }
 
-const modifierLieu = async (req, req)=>{
+const modifierLieu = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
         let nAdresse = req.body.adresse;
@@ -72,7 +72,7 @@ const modifierLieu = async (req, req)=>{
     }
 }
 
-const supprimerLieu = async (req, req)=>{
+const supprimerLieu = async (req, res)=>{
     try {
         let id = new ObjectID(req.params.id);
        

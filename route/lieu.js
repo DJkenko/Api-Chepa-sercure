@@ -1,5 +1,5 @@
 const express = require('express');
-const { ajouterLieu , getTousLieu } = require('../controller/Lieu');
+const { ajouterLieu , getTousLieu, getLieu, modifierLieu, supprimerLieu } = require('../controller/Lieu');
 const router = express.Router();
 
 router.route("/lieu").post(ajouterLieu);
