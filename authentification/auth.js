@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const client = require("../bd/connect");
 
 const accessTokenSecret = 'somerandomaccesstoken';
 const refreshTokenSecret = 'somerandomstringforrefreshtoken';
@@ -15,7 +16,7 @@ router.route("/authentication").post('/login', (req, res) => {
     const { username, password } = req.body;
 
     // filter user from DB by username and password
-    const user = null;
+    const user = getUser();
 
     if (user) {
         // generate access token
@@ -63,3 +64,22 @@ router.route("/authentication").post('/logout', (req, res) => {
 
     res.send("Logout successful");
 });
+
+const getUser = async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        let cursor = client.bd().collection("user").find({username:username, password:password});
+        let result = await cursor.toArray();
+
+        if(result.length > 0) {
+            res.status(200).json(result[0]);
+        } else {
+            res.status(204).json({msg : "Cette Gestion n'existe pas "});
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+}
