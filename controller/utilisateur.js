@@ -3,7 +3,7 @@ const client = require("../bd/connect");
 
 const ajouterUtilisateur = async (req, res)=>{
     try {
-        let utilisateur = new Utilisateur(req.body.username, req.body.password, req.body.token);
+        let utilisateur = new Utilisateur(req.body.username, req.body.password);
 
         let result = await client.bd().collection('user').insertOne(utilisateur)
     
